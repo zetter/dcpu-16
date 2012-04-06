@@ -4,15 +4,19 @@ describe '#execute' do
   subject { Dcpu.new }
   
   it 'sets A register' do
+        pending
     subject.load(0x7c01, 0x0030)
     subject.excecute
+
     subject.storage[0].should == 16
   end
   
   it 'sets B register' do
+    pending
     subject.load(0x7c01, 0x0030)
     subject.execute
-    subject.storage[1] == 16
+
+    subject.storage[1].shoul == 16
   end
   
 end
