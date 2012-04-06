@@ -54,7 +54,19 @@ describe Dcpu::Storage do
       subject.memory[6].should == 22
     end
 
+    it "reads the [next_word]" do
+      subject[0x1c] = 5
+      subject.memory[6] = 11
+      subject.memory[11] = 100
+      subject[0x1e].should == 100
+    end
 
+    it "writes the [next_word]" do
+      subject[0x1c] = 5
+      subject.memory[6] = 11
+      subject[0x1e] = 100
+      subject.memory[11].should == 100
+    end
 
     it "reads and writes to PC" do
       subject[0x1c] = 17
