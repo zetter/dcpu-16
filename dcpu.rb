@@ -108,14 +108,28 @@ class Dcpu
 
   def execute(word)
     instruction = Instruction.new(word)
+    a = instruction.a
+    b = instruction.b
     case instruction.opcode
     when SET
-      storage[instruction.a] = storage[instruction.b]
+      storage[a] = storage[b]
     when ADD
-      storage[instruction.a] = storage[instruction.a] + storage[instruction.b]
+      storage[a] = storage[a] + storage[b]
+    when MUL
+      storage[a] = storage[a] * storage[b]
+    when DIV
+      storage[a] = storage[a] / storage[b]
+    when SHL
+      storage[a] = storage[a] << storage[b]
+    when SHR
+      storage[a] = storage[a] >> storage[b]
+    when AND
+      storage[a] = storage[a] & storage[b]
+    when BOR
+      storage[a] = storage[a] | storage[b]
+    when XOR
+      storage[a] = storage[a] ^ storage[b]
     end
-  
-    
   end
   
   class Instruction
