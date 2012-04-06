@@ -43,16 +43,16 @@ class Dcpu
       when 0x1a
         #: PUSH / [--SP]
       when 0x1b
-        #: SP
+        @stack_pointer
       when 0x1c
-        #: PC
+        @program_counter
       when 0x1d
-        #: O
+        @overflow
       when 0x1e
         #: [next word]
       when 0x1f
         #: next word (literal)
-      when 0x20-0x3f
+      when 0x20..0x3f
         #: literal value 0x00-0x1f (literal)
       end
     end
@@ -72,16 +72,16 @@ class Dcpu
       when 0x1a
         #: PUSH / [--SP]
       when 0x1b
-        #: SP
+        @stack_pointer = data
       when 0x1c
-        #: PC
+        @program_counter = data
       when 0x1d
-        #: O
+        @overflow = data
       when 0x1e
         #: [next word]
       when 0x1f
         #: next word (literal)
-      when 0x20-0x3f
+      when 0x20..0x3f
         #: literal value 0x00-0x1f (literal)
       end
     end
