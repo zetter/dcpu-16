@@ -31,7 +31,13 @@ class Storage
 
   def reader_writer(location, data = nil)
     store, key = store_and_key(location)
-    lookup(store, key, data)
+
+    return store if store.is_a?(Fixnum)
+    if data
+      store[key] = data
+    else
+      store[key]
+    end
   end
   
   alias_method :[], :reader_writer
@@ -68,15 +74,6 @@ private
       [memory, @other[:program_counter]]
     when LITERALS
       location - LITERALS.begin
-    end
-  end
-
-  def lookup(obj, key, data = nil)
-    return obj if obj.is_a?(Fixnum)
-    if data
-      obj[key] = data
-    else
-      obj[key]
     end
   end
 end
