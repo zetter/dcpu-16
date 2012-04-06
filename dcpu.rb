@@ -30,7 +30,16 @@ class Storage
   end
 
   def reader_writer(location, data = nil)
-    store, key = case location
+    store, key = store_and_key
+    lookup(store, key, data)
+  end
+  
+  alias_method :[], :reader_writer
+  alias_method :[]=, :reader_writer
+
+private
+  def store_and_key(location)
+    case location
     when REGISTERS
       [@registers, location]
     when REGISTERS_MEM
@@ -60,13 +69,8 @@ class Storage
     when LITERALS
       location - LITERALS.begin
     end
-    lookup(store, key, data)
   end
-  
-  alias_method :[], :reader_writer
-  alias_method :[]=, :reader_writer
 
-private
   def lookup(obj, key, data = nil)
     return obj if obj.is_a?(Fixnum)
     if data
