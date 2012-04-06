@@ -30,7 +30,7 @@ class Storage
   end
 
   def reader_writer(location, data = nil)
-    store, key = store_and_key
+    store, key = store_and_key(location)
     lookup(store, key, data)
   end
   
