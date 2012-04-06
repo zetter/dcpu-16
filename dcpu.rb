@@ -49,9 +49,11 @@ private
     when REGISTERS
       [@registers, location]
     when REGISTERS_MEM
-      [memory, self[location - REGISTERS_MEM.begin]]
+      value_in_register = self[location - REGISTERS_MEM.begin]
+      [memory, value_in_register]
     when REGISTERS_MEM_NEXT_WORD
-      [memory, self[location - REGISTERS_MEM_NEXT_WORD.begin] + self[NEXT_WORD_LITERAL]]
+      value_in_register = self[location - REGISTERS_MEM_NEXT_WORD.begin]
+      [memory, value_in_register + self[NEXT_WORD_LITERAL]]
     when POP
       [memory, @other[:stack_pointer]].tap {
         @other[:stack_pointer] += 1
