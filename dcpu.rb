@@ -38,11 +38,14 @@ class Dcpu
       when 0x10..0x17
         @memory[self[location - 0x10] + self[0x1f]]
       when 0x18
-        #: POP / [SP++]
+        value = @memory[@stack_pointer]
+        @stack_pointer += 1
+        value
       when 0x19
-        #: PEEK / [SP]
+        @memory[@stack_pointer]
       when 0x1a
-        #: PUSH / [--SP]
+        @stack_pointer -= 1
+        @memory[@stack_pointer]
       when 0x1b
         @stack_pointer
       when 0x1c

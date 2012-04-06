@@ -127,23 +127,23 @@ describe Dcpu::Storage do
       end
 
       it "writes POP" do
-        subject[0x1b] = 11
-        subject[0x18] == 40
+        subject[0x1b] = 10
+        subject[0x18] = 40
         subject.memory[11].should == 40
         subject[0x1b].should == 11
       end
       
       it "reads PUSH" do
-        subject[0x1a] = 10
-        subject.memory[10] = 40
-        subject[0x18].should == 40
-        subject[0x1b].should == 11
+        subject[0x1b] = 10
+        subject.memory[9] = 40
+        subject[0x1a].should == 40
+        subject[0x1b].should == 9
       end
 
       it "writes PUSH" do
-        subject[0x1a] = 11
-        subject[0x18] == 40
-        subject.memory[11].should == 40
+        subject[0x1b] = 10
+        subject[0x1a] = 40
+        subject.memory[9].should == 40
         subject[0x1b].should == 9
       end
       
