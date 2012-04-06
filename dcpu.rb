@@ -9,4 +9,13 @@ class Dcpu
   
   def a
   end
+  
+  class Instruction
+    def initialize(instruction)
+    end
+    
+    def opcode
+    end
+  end
+
 end
