@@ -88,17 +88,17 @@ class Dcpu
     @storage = Storage.new
   end
 
-  def execute(word1, word2)
+  def execute(word1)
     instruction = Instruction.new(word1)
     case instruction.opcode
     when 0x01
-      set(instruction.a, word2)
+      set(instruction.a, instruction.b)
     end
     
   end
   
   def set(a, b)
-    storage[a] = b - 0x20
+    storage[a] = storage[b]
   end
   
   class Instruction
@@ -106,17 +106,17 @@ class Dcpu
     def initialize(instruction)
       @instruction = instruction
     end
-
+    # bbbbbbaaaaaaoooo
     def opcode
-      3.downto(0).map { |n| instruction[n] }.join.to_i(2)
+      instruction % 0b10000
     end
 
     def a
-      5.downto(4).map { |n| instruction[n] }.join.to_i(2)
+      (instruction >> 4) % 0b1000000
     end
     
     def b
-      5.downto(4).map { |n| instruction[n] }.join.to_i(2)
+      (instruction >> 10) % 0b1000000
     end
   end
 
