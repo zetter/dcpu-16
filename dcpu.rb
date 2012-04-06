@@ -1,19 +1,23 @@
 class Dcpu
+  attr_reader :storage
+
   def initialize
+    @storage = Storage.new
   end
 
   def execute(word1, word2)
     instruction = Instruction.new(word1)
     case instruction.opcode
-    when 0x01 # SET
-      @a = word2 - 0x20
+    when 0x01
+      set(instruction.a, word2)
     end
     
   end
   
-  def a
-    @a
+  def set(a, b)
+    storage[a] = b - 0x20
   end
+
   
   class Storage
     def initialize
@@ -48,7 +52,7 @@ class Dcpu
     end
     
     def b
-      
+      5.downto(4).map { |n| instruction[n] }.join.to_i(2)
     end
   end
 

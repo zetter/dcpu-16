@@ -5,12 +5,12 @@ describe '#execute' do
   
   it 'sets A register' do
     subject.execute(0x7c01, 0x0030)
-    subject.a.should == 16
+    subject.storage[0].should == 16
   end
   
   it 'sets B register' do
     subject.execute(0x7c01, 0x0030)
-    subject.b.should == 16
+    subject.storage[1] == 16
   end
   
 end
