@@ -28,7 +28,28 @@ class Dcpu
       case location
       when 0x00..0x07
         @registers[location]
-      end
+      when 0x00..0x0f
+        # [register]
+      when 0x10..0x17
+        # [next word + register]
+      when 0x18
+        #: POP / [SP++]
+      when 0x19
+        #: PEEK / [SP]
+      when 0x1a
+        #: PUSH / [--SP]
+      when 0x1b
+        #: SP
+      when 0x1c
+        #: PC
+      when 0x1d
+        #: O
+      when 0x1e
+        #: [next word]
+      when 0x1f
+        #: next word (literal)
+      when 0x20-0x3f
+        #: literal value 0x00-0x1f (literal)
     end
 
     def []=(location, data)
