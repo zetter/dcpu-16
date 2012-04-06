@@ -6,7 +6,6 @@ class Dcpu
     instruction = Instruction.new(word1)
     case instruction.opcode
     when 0x01 # SET
-      set(instruction.a, instruction.b)
       @a = word2 - 0x20
     end
     

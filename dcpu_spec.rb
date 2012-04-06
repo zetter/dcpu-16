@@ -19,9 +19,11 @@ describe Dcpu::Storage do
   subject { Dcpu::Storage.new }
   
   describe '#read and #write' do
-    it 'should handle registers'
-      subject['0x00'] = 17
-      subject['0x00'].should == 17
+    %W{A B C X Y Z I J}.each.with_index do |register, i|
+      it "should handle register #{register}" do
+        subject[i] = 17
+        subject[i].should == 17
+      end
     end
   end
 end
