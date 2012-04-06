@@ -45,7 +45,8 @@ describe Dcpu::Storage do
       it "reads [next_word + #{register}]" do
         subject[i] = 2
         subject[0x1c] = 5
-        subject.memory[7] = 40
+        subject[0x1f] = 10
+        subject.memory[12] = 40
         subject[i + 0x10].should == 40
       end
     end
@@ -54,8 +55,9 @@ describe Dcpu::Storage do
       it "writes [next_word + #{register}]" do
         subject[i] = 2
         subject[0x1c] = 5
+        subject[0x1f] = 10
         subject[i + 0x10] = 40
-        subject.memory[7].should == 40
+        subject.memory[12].should == 40
       end
     end
 

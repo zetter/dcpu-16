@@ -36,7 +36,7 @@ class Dcpu
       when 0x00..0x0f
         @memory[self[location - 0x08]]
       when 0x10..0x17
-        # [next word + register]
+        @memory[self[location - 0x10] + self[0x1f]]
       when 0x18
         #: POP / [SP++]
       when 0x19
@@ -65,7 +65,7 @@ class Dcpu
       when 0x00..0x0f
         @memory[self[location - 0x08]] = data
       when 0x10..0x17
-        # [next word + register]
+        @memory[self[location - 0x10] + self[0x1f]] = data
       when 0x18
         #: POP / [SP++]
       when 0x19
