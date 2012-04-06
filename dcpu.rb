@@ -50,7 +50,7 @@ class Dcpu
       when 0x1d
         @overflow
       when 0x1e
-        #: [next word]
+        @memory[@memory[@program_counter + 1]]
       when 0x1f
         @memory[@program_counter + 1]
       when 0x20..0x3f
@@ -79,7 +79,7 @@ class Dcpu
       when 0x1d
         @overflow = data
       when 0x1e
-        #: [next word]
+        @memory[@memory[@program_counter + 1]] = data
       when 0x1f
         @memory[@program_counter + 1] = data
       when 0x20..0x3f
