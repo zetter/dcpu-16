@@ -137,7 +137,7 @@ class Dcpu
     end
 
     def to_s
-      word.to_s(16)
+      @word.to_s(16)
     end
 
     def opcode

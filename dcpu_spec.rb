@@ -1,7 +1,7 @@
 require './dcpu'
 
 def build_word(b, a, o)
-  Word.new(b << 10 | a << 4 | o)
+  Dcpu::Word.new(b << 10 | a << 4 | o)
 end
 
 def literal(x)
@@ -83,7 +83,7 @@ describe '#execute' do
   
 end
 
-describe Dcpu::Storage do
+describe Storage do
   include StorageConstants
   subject { Storage.new }
 
@@ -231,10 +231,9 @@ describe Dcpu::Storage do
   end
 end
 
-describe Dcpu::Instruction do
+describe Dcpu::Word do
   subject {
-    word = build_word(@b = 5, @a = 4, @opcode = 3)
-    Dcpu::Word.new(word)
+    build_word(@b = 5, @a = 4, @opcode = 3)
   }
   
   describe '#opcode' do
@@ -244,8 +243,8 @@ describe Dcpu::Instruction do
   end
 
   describe '#to_s' do
-    it 'return hex representation of the word'
-      subject.to_s.should == @a
+    it 'return hex representation of the word' do
+      subject.to_s.should == '1443'
     end
   end
 
