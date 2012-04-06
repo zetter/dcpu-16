@@ -114,7 +114,7 @@ describe Dcpu::Storage do
 
       it "writes PEEK" do
         subject[0x1b] = 10
-        subject[0x19] == 40
+        subject[0x19] = 40
         subject.memory[10].should == 40
         subject[0x1b].should == 10
       end
@@ -129,7 +129,7 @@ describe Dcpu::Storage do
       it "writes POP" do
         subject[0x1b] = 10
         subject[0x18] = 40
-        subject.memory[11].should == 40
+        subject.memory[10].should == 40
         subject[0x1b].should == 11
       end
       
@@ -149,6 +149,9 @@ describe Dcpu::Storage do
       
     end
 
+    it "starts the SP to 0xffff" do
+      subject[0x1b].should == 0xffff
+    end
 
     it "reads and writes to SP" do
       subject[0x1b] = 17

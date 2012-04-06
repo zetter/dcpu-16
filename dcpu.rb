@@ -25,7 +25,7 @@ class Dcpu
       @registers = Array.new(8)
       @memory = Array.new(0x10000)
       @program_counter = 0
-      @stack_pointer = 0
+      @stack_pointer = 0xffff
       @overflow = 0
     end
 
@@ -70,11 +70,14 @@ class Dcpu
       when 0x10..0x17
         @memory[self[location - 0x10] + self[0x1f]] = data
       when 0x18
-        #: POP / [SP++]
+        value = @memory[@stack_pointer] = data
+        @stack_pointer += 1
+        value
       when 0x19
-        #: PEEK / [SP]
+        @memory[@stack_pointer] = data
       when 0x1a
-        #: PUSH / [--SP]
+        @stack_pointer -= 1
+        @memory[@stack_pointer] = data
       when 0x1b
         @stack_pointer = data
       when 0x1c
