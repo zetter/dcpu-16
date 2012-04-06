@@ -22,14 +22,14 @@ describe Dcpu::Storage do
 
   describe '#[] and #[]=' do
     %W{A B C X Y Z I J}.each.with_index do |register, i|
-      it "should read and write to #{register}" do
+      it "reads and write to #{register}" do
         subject[i] = 17
         subject[i].should == 17
       end
     end
 
     %W{A B C X Y Z I J}.each.with_index do |register, i|
-      it "should read and write to [#{register}]" do
+      it "reads and write to [#{register}]" do
         subject[i] = 18
         location = i + 0x08
         subject[location] = 22
@@ -37,17 +37,28 @@ describe Dcpu::Storage do
       end
     end
 
-    it "should read and write to PC" do
+    it "reads and writes to PC" do
       subject[0x1c] = 17
       subject[0x1c].should == 17
     end
 
-    it "should read and write to SP" do
+    it "loads literals" do
+      subject[0x20].should == 0
+      subject[0x21].should == 1
+      subject[0x3f].should == 0x1f
+    end
+
+    it "does nothing when writing literals" do
+      subject[0x20] = 12
+      subject[0x20].should == 0
+    end
+
+    it "reads and writes to SP" do
       subject[0x1b] = 17
       subject[0x1b].should == 17
     end
 
-    it "should read and write to O" do
+    it "reads and writes to O" do
       subject[0x1d] = 17
       subject[0x1d].should == 17
     end
