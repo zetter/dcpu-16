@@ -163,8 +163,8 @@ describe Dcpu::Storage do
     end
 
     it "reads and writes to O" do
-      subject[0x1d] = 17
-      subject[0x1d].should == 17
+      subject[O] = 17
+      subject[O].should == 17
     end
   end
 end

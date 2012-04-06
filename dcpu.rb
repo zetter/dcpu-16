@@ -22,74 +22,60 @@ class Storage
   def initialize
     @registers = Array.new(8)
     @memory = Array.new(0x10000)
-    @program_counter = 0
-    @stack_pointer = 0xffff
-    @overflow = 0
+    @other = {
+      program_counter: 0,
+      stack_pointer: 0xffff,
+      overflow: 0
+    }
   end
 
   def [](location)
-    case location
-    when REGISTERS
-      @registers[location]
-    when REGISTERS_MEM
-      memory[self[location - REGISTERS_MEM.begin]]
-    when REGISTERS_MEM_NEXT_WORD
-      memory[self[location - REGISTERS_MEM_NEXT_WORD.begin] + self[NEXT_WORD_LITERAL]]
-    when POP
-      value = memory[@stack_pointer]
-      @stack_pointer += 1
-      value
-    when PEEK
-      memory[@stack_pointer]
-    when PUSH
-      @stack_pointer -= 1
-      memory[@stack_pointer]
-    when SP
-      @stack_pointer
-    when PC
-      @program_counter
-    when O
-      @overflow
-    when NEXT_WORD
-      memory[self[NEXT_WORD_LITERAL]]
-    when NEXT_WORD_LITERAL
-      @program_counter += 1
-      memory[@program_counter]
-    when LITERALS
-      location - LITERALS.begin
-    end
+    reader_writer(location)
   end
 
   def []=(location, data)
+    reader_writer(location, data)
+  end
+  
+private
+  def lookup(obj, key, data = nil)
+    if data
+      obj[key] = data
+    else
+      obj[key]
+    end
+  end
+
+  def reader_writer(location, data = nil)
     case location
     when REGISTERS
-      @registers[location] = data
+      lookup(@registers, location, data)
     when REGISTERS_MEM
-      memory[self[location - 0x08]] = data
+      lookup(memory, self[location - 0x08], data)
     when REGISTERS_MEM_NEXT_WORD
-      memory[self[location - 0x10] + self[0x1f]] = data
+      lookup(memory, self[location - 0x10] + self[NEXT_WORD_LITERAL], data)
     when POP
-      value = memory[@stack_pointer] = data
-      @stack_pointer += 1
+      value = lookup(memory, @other[:stack_pointer], data)
+      @other[:stack_pointer] += 1
       value
     when PEEK
-      memory[@stack_pointer] = data
+      lookup(memory, @other[:stack_pointer], data)
     when PUSH
-      @stack_pointer -= 1
-      memory[@stack_pointer] = data
+      @other[:stack_pointer] -= 1
+      lookup(memory, @other[:stack_pointer], data)
     when SP
-      @stack_pointer = data
+      lookup(@other, :stack_pointer, data)
     when PC
-      @program_counter = data
+      lookup(@other, :program_counter, data)
     when O
-      @overflow = data
+      lookup(@other, :overflow, data)
     when NEXT_WORD
-      memory[self[0x1f]] = data
+      lookup(memory, self[NEXT_WORD_LITERAL], data)
     when NEXT_WORD_LITERAL
-      @program_counter += 1
-      memory[@program_counter] = data
+      @other[:program_counter] += 1
+      lookup(memory, @other[:program_counter], data)
     when LITERALS
-      # noop
+      location - LITERALS.begin
     end
   end
 end
