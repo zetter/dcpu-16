@@ -41,6 +41,24 @@ describe Dcpu::Storage do
       end
     end
 
+    %W{A B C X Y Z I J}.each.with_index do |register, i|
+      it "reads [next_word + #{register}]" do
+        subject[i] = 2
+        subject[0x1c] = 5
+        subject.memory[7] = 40
+        subject[location].should == 40
+      end
+    end
+
+    %W{A B C X Y Z I J}.each.with_index do |register, i|
+      it "writes [next_word + #{register}]" do
+        subject[i] = 2
+        subject[0x1c] = 5
+        subject.memory[7] = 40
+        subject[location].should == 40
+      end
+    end
+
     it "reads the next_word" do
       subject[0x1c] = 5
       subject.memory[6] = 11
