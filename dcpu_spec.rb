@@ -5,17 +5,17 @@ def build_instruction(b, a, o)
   b << 10 | a << 4 | o
 end
 
-describe '#execute' do
+describe '#execute set' do
   subject { Dcpu.new }
   include StorageConstants
-  
+  include InstructionConstants  
   it 'sets A register' do
-    subject.execute(build_instruction(4 + LITERALS.begin, A, 0x1))
+    subject.execute(build_instruction(4 + LITERALS.begin, A, SET))
     subject.storage[A].should == 4
   end
   
   it 'sets B register' do
-    subject.execute(build_instruction(4 + LITERALS.begin, A + 1, 0x1))
+    subject.execute(build_instruction(4 + LITERALS.begin, A + 1, SET))
     subject.storage[A + 1].should == 4
   end
   

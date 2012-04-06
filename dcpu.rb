@@ -80,25 +80,39 @@ private
   end
 end
 
+module InstructionConstants
+  SET = 0x1 # a, b - sets a to b
+  ADD = 0x2 # a, b - sets a to a+b, sets O to 0x0001 if there's an overflow, 0x0 otherwise
+  SUB = 0x3 # a, b - sets a to a-b, sets O to 0xffff if there's an underflow, 0x0 otherwise
+  MUL = 0x4 # a, b - sets a to a*b, sets O to ((a*b)>>16)&0xffff
+  DIV = 0x5 # a, b - sets a to a/b, sets O to ((a<<16)/b)&0xffff. if b==0, sets a and O to 0 instead.
+  MOD = 0x6 # a, b - sets a to a%b. if b==0, sets a to 0 instead.
+  SHL = 0x7 # a, b - sets a to a<<b, sets O to ((a<<b)>>16)&0xffff
+  SHR = 0x8 # a, b - sets a to a>>b, sets O to ((a<<16)>>b)&0xffff
+  AND = 0x9 # a, b - sets a to a&b
+  BOR = 0xa # a, b - sets a to a|b
+  XOR = 0xb # a, b - sets a to a^b
+  IFE = 0xc # a, b - performs next instruction only if a==b
+  IFN = 0xd # a, b - performs next instruction only if a!=b
+  IFG = 0xe # a, b - performs next instruction only if a>b
+  IFB = 0xf # a, b - performs next instruction only if (a&b)!=0
+end
 
 class Dcpu
+  include InstructionConstants
   attr_reader :storage
 
   def initialize
     @storage = Storage.new
   end
 
-  def execute(word1)
-    instruction = Instruction.new(word1)
+  def execute(word)
+    instruction = Instruction.new(word)
     case instruction.opcode
-    when 0x01
-      set(instruction.a, instruction.b)
+    when SET
+      storage[instruction.a] = storage[instruction.b]
     end
     
-  end
-  
-  def set(a, b)
-    storage[a] = storage[b]
   end
   
   class Instruction
