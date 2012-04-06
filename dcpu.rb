@@ -55,14 +55,14 @@ private
       value_in_register = self[location - REGISTERS_MEM_NEXT_WORD.begin]
       [memory, value_in_register + self[NEXT_WORD_LITERAL]]
     when POP
-      [memory, @other[:stack_pointer]].tap {
-        @other[:stack_pointer] += 1
+      [memory, self[SP]].tap {
+        self[SP] += 1
       }
     when PEEK
-      [memory, @other[:stack_pointer]]
+      [memory, self[SP]]
     when PUSH
-      @other[:stack_pointer] -= 1
-      [memory, @other[:stack_pointer]]
+      self[SP] -= 1
+      [memory, self[SP]]
     when SP
       [@other, :stack_pointer]
     when PC
@@ -72,8 +72,8 @@ private
     when NEXT_WORD
       [memory, self[NEXT_WORD_LITERAL]]
     when NEXT_WORD_LITERAL
-      @other[:program_counter] += 1
-      [memory, @other[:program_counter]]
+      self[PC] += 1
+      [memory, self[PC]]
     when LITERALS
       location - LITERALS.begin
     end
