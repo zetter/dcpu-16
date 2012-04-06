@@ -1,5 +1,4 @@
 class Dcpu
-
   def initialize
   end
 
@@ -7,6 +6,7 @@ class Dcpu
     instruction = Instruction.new(word1)
     case instruction.opcode
     when 0x01 # SET
+      set(instruction.a, instruction.b)
       @a = word2 - 0x20
     end
     
@@ -15,6 +15,24 @@ class Dcpu
   def a
     @a
   end
+  
+  class Storage
+    def initialize
+      @registers = Array.new(8)
+    end
+
+    def [](location)
+      case location
+      when 0..8
+        @registers[location]
+      end
+    end
+
+    def []=(location, data)
+      @registers[location]
+    end
+  end
+  
   
   class Instruction
     attr_reader :instruction
@@ -30,6 +48,9 @@ class Dcpu
       5.downto(4).map { |n| instruction[n] }.join.to_i(2)
     end
     
+    def b
+      
+    end
   end
 
 end

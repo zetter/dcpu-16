@@ -15,6 +15,17 @@ describe '#execute' do
   
 end
 
+describe Dcpu::Storage do
+  subject { Dcpu::Storage.new }
+  
+  describe '#read and #write' do
+    it 'should handle registers'
+      subject['0x00'] = 17
+      subject['0x00'].should == 17
+    end
+  end
+end
+
 describe Dcpu::Instruction do
   describe '#opcode' do
     it 'returns the opcode' do
