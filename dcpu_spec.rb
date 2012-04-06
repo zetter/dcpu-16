@@ -7,6 +7,12 @@ describe '#execute' do
     subject.execute(0x7c01, 0x0030)
     subject.a.should == 16
   end
+  
+  it 'sets B register' do
+    subject.execute(0x7c01, 0x0030)
+    subject.b.should == 16
+  end
+  
 end
 
 describe Dcpu::Instruction do
@@ -16,4 +22,11 @@ describe Dcpu::Instruction do
       i.opcode.should == 0x01
     end
   end
+  describe '#a' do
+    it 'returns part a' do
+      i = Dcpu::Instruction.new(0x7c01)
+      i.a.should == 0x00
+    end
+  end
+  
 end

@@ -21,10 +21,15 @@ class Dcpu
     def initialize(instruction)
       @instruction = instruction
     end
-    
+
     def opcode
       3.downto(0).map { |n| instruction[n] }.join.to_i(2)
     end
+
+    def a
+      5.downto(4).map { |n| instruction[n] }.join.to_i(2)
+    end
+    
   end
 
 end
