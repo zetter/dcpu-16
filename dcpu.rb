@@ -52,7 +52,7 @@ class Dcpu
       when 0x1e
         #: [next word]
       when 0x1f
-        #: next word (literal)
+        @memory[@program_counter + 1]
       when 0x20..0x3f
         location - 0x20
       end
@@ -81,7 +81,7 @@ class Dcpu
       when 0x1e
         #: [next word]
       when 0x1f
-        #: next word (literal)
+        @memory[@program_counter + 1] = data
       when 0x20..0x3f
         # noop
       end
