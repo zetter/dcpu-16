@@ -107,10 +107,9 @@ class Dcpu
   end
 
   def execute(word)
-    instruction = Instruction.new(word)
-    a = instruction.a
-    b = instruction.b
-    case instruction.opcode
+    a = word.a
+    b = word.b
+    case word.opcode
     when SET
       storage[a] = storage[b]
     when ADD
@@ -132,22 +131,25 @@ class Dcpu
     end
   end
   
-  class Instruction
-    attr_reader :instruction
-    def initialize(instruction)
-      @instruction = instruction
+  class Word
+    def initialize(word)
+      @word = word
     end
-    # bbbbbbaaaaaaoooo
+
+    def to_s
+      word.to_s(16)
+    end
+
     def opcode
-      instruction % 0b10000
+      @word % 0b10000
     end
 
     def a
-      (instruction >> 4) % 0b1000000
+      (@word >> 4) % 0b1000000
     end
-    
+
     def b
-      (instruction >> 10) % 0b1000000
+      (@word >> 10) % 0b1000000
     end
   end
 

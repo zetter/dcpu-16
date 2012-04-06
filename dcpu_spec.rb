@@ -1,8 +1,7 @@
 require './dcpu'
 
-def build_instruction(b, a, o)
-  # bbbbbbaaaaaaoooo
-  b << 10 | a << 4 | o
+def build_word(b, a, o)
+  Word.new(b << 10 | a << 4 | o)
 end
 
 def literal(x)
@@ -15,68 +14,68 @@ describe '#execute' do
   include InstructionConstants  
   describe 'SET' do
     it 'sets A register' do
-      subject.execute(build_instruction(literal(4), A, SET))
+      subject.execute(build_word(literal(4), A, SET))
       subject.storage[A].should == 4
     end
   
     it 'sets B register' do
-      subject.execute(build_instruction(literal(4), A + 1, SET))
+      subject.execute(build_word(literal(4), A + 1, SET))
       subject.storage[A + 1].should == 4
     end
   end
   describe 'ADD' do
     it 'adds small numbers' do
       subject.storage[A] = 2
-      subject.execute(build_instruction(literal(4), A, ADD))
+      subject.execute(build_word(literal(4), A, ADD))
       subject.storage[A].should == 6
     end
   end
   describe 'MUL' do
     it 'multiplies small numbers' do
       subject.storage[A] = 2
-      subject.execute(build_instruction(literal(4), A, MUL))
+      subject.execute(build_word(literal(4), A, MUL))
       subject.storage[A].should == 8
     end
   end
   describe 'DIV' do
     it 'divides small numbers' do
       subject.storage[A] = 6
-      subject.execute(build_instruction(literal(3), A, DIV))
+      subject.execute(build_word(literal(3), A, DIV))
       subject.storage[A].should == 2
     end
   end
   describe 'SHL' do
     it 'shift left small numbers' do
       subject.storage[A] = 2
-      subject.execute(build_instruction(literal(3), A, SHL))
+      subject.execute(build_word(literal(3), A, SHL))
       subject.storage[A].should == 16
     end
   end
   describe 'SHR' do
     it 'shift right small numbers' do
       subject.storage[A] = 16
-      subject.execute(build_instruction(literal(3), A, SHR))
+      subject.execute(build_word(literal(3), A, SHR))
       subject.storage[A].should == 2
     end
   end
   describe 'AND' do
     it 'bitwise AND small numbers' do
       subject.storage[A] = 0b0110
-      subject.execute(build_instruction(literal(0b0101), A, AND))
+      subject.execute(build_word(literal(0b0101), A, AND))
       subject.storage[A].should == 0b0100
     end
   end
   describe 'BOR' do
     it 'bitwise OR small numbers' do
       subject.storage[A] = 0b0100
-      subject.execute(build_instruction(literal(0b0001), A, BOR))
+      subject.execute(build_word(literal(0b0001), A, BOR))
       subject.storage[A].should == 0b0101
     end
   end
   describe 'XOR' do
     it 'bitwise XOR small numbers' do
       subject.storage[A] = 0b0110
-      subject.execute(build_instruction(literal(0b0101), A, XOR))
+      subject.execute(build_word(literal(0b0101), A, XOR))
       subject.storage[A].should == 0b0011
     end
   end
@@ -233,27 +232,32 @@ describe Dcpu::Storage do
 end
 
 describe Dcpu::Instruction do
+  subject {
+    word = build_word(@b = 5, @a = 4, @opcode = 3)
+    Dcpu::Word.new(word)
+  }
+  
   describe '#opcode' do
     it 'returns the opcode' do
-      machine_code = build_instruction(5, 4, 3)
-      instruction = Dcpu::Instruction.new(machine_code)
-      instruction.opcode.should == 3
+      subject.opcode.should == @opcode
+    end
+  end
+
+  describe '#to_s' do
+    it 'return hex representation of the word'
+      subject.to_s.should == @a
     end
   end
 
   describe '#a' do
     it 'returns part a' do
-      machine_code = build_instruction(5, 4, 3)
-      instruction = Dcpu::Instruction.new(machine_code)
-      instruction.a.should == 4
+      subject.a.should == @a
     end
   end
 
   describe '#b' do
     it 'returns part b' do
-      machine_code = build_instruction(5, 4, 3)
-      instruction = Dcpu::Instruction.new(machine_code)
-      instruction.b.should == 5
+      subject.b.should == @b
     end
   end
   
