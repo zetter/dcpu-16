@@ -22,16 +22,14 @@ describe Dcpu::Storage do
 
   describe '#read and #write' do
     %W{A B C X Y Z I J}.each.with_index do |register, i|
-      it "should handle register #{register}" do
+      it "should read and write to #{register}" do
         subject[i] = 17
         subject[i].should == 17
       end
     end
-  end
-  
-  describe 'it should read memory from register values' do
+
     %W{A B C X Y Z I J}.each.with_index do |register, i|
-      it "should read [#{register}]" do
+      it "should read and write to  [#{register}]" do
         subject[i] = 18
         location = i + 0x08
         subject[location] = 22
