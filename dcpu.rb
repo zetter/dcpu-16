@@ -53,9 +53,10 @@ class Dcpu
       when 0x1d
         @overflow
       when 0x1e
-        @memory[@memory[@program_counter + 1]]
+        @memory[self[0x1f]]
       when 0x1f
-        @memory[@program_counter + 1]
+        @program_counter += 1
+        @memory[@program_counter]
       when 0x20..0x3f
         location - 0x20
       end
@@ -85,8 +86,9 @@ class Dcpu
       when 0x1d
         @overflow = data
       when 0x1e
-        @memory[@memory[@program_counter + 1]] = data
+        @memory[self[0x1f]] = data
       when 0x1f
+        # Chosen not to incremnt pc when word written, spec ambigous
         @memory[@program_counter + 1] = data
       when 0x20..0x3f
         # noop

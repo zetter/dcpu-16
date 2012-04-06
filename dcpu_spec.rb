@@ -59,7 +59,6 @@ describe Dcpu::Storage do
         subject[0x1f] = 10
         subject[i + 0x10] = 40
         subject.memory[12].should == 40
-        subject[0x1c].should == 6
       end
     end
 
@@ -75,7 +74,6 @@ describe Dcpu::Storage do
       subject.memory[6] = 11
       subject[0x1f] = 22
       subject.memory[6].should == 22
-      subject[0x1c].should == 6
     end
 
     it "reads the [next_word]" do
@@ -91,7 +89,6 @@ describe Dcpu::Storage do
       subject.memory[6] = 11
       subject[0x1e] = 100
       subject.memory[11].should == 100
-      subject[0x1c].should == 6
     end
 
     it "reads and writes to PC" do
