@@ -33,7 +33,7 @@ class Dcpu
       when 0x00..0x07
         @registers[location]
       when 0x00..0x0f
-        # [register]
+        @memory[self[location - 0x08]]
       when 0x10..0x17
         # [next word + register]
       when 0x18
@@ -62,7 +62,7 @@ class Dcpu
       when 0x00..0x07
         @registers[location] = data
       when 0x00..0x0f
-        # [register]
+        @memory[self[location - 0x08]] = data
       when 0x10..0x17
         # [next word + register]
       when 0x18
