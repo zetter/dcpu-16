@@ -111,7 +111,10 @@ class Dcpu
     case instruction.opcode
     when SET
       storage[instruction.a] = storage[instruction.b]
+    when ADD
+      storage[instruction.a] = storage[instruction.a] + storage[instruction.b]
     end
+  
     
   end
   

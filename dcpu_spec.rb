@@ -5,20 +5,32 @@ def build_instruction(b, a, o)
   b << 10 | a << 4 | o
 end
 
-describe '#execute set' do
+def literal(x)
+  x + LITERALS.begin
+end
+
+describe '#execute' do
   subject { Dcpu.new }
   include StorageConstants
   include InstructionConstants  
-  it 'sets A register' do
-    subject.execute(build_instruction(4 + LITERALS.begin, A, SET))
-    subject.storage[A].should == 4
-  end
+  describe 'set' do
+    it 'sets A register' do
+      subject.execute(build_instruction(literal(4), A, SET))
+      subject.storage[A].should == 4
+    end
   
-  it 'sets B register' do
-    subject.execute(build_instruction(4 + LITERALS.begin, A + 1, SET))
-    subject.storage[A + 1].should == 4
+    it 'sets B register' do
+      subject.execute(build_instruction(literal(4), A + 1, SET))
+      subject.storage[A + 1].should == 4
+    end
   end
-  
+  describe 'add' do
+    it 'adds small numbers' do
+      subject.storage[A] = 2
+      subject.execute(build_instruction(literal(4), A, ADD))
+      subject.storage[A].should == 6
+    end
+  end
 end
 
 describe Dcpu::Storage do
