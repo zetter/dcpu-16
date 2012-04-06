@@ -3,15 +3,17 @@ class Dcpu
   def initialize
   end
 
-  def execute(words)
-    case word
+  def execute(word1, word2)
+    instruction = Instruction.new(word1)
+    case instruction.opcode
     when 0x01 # SET
-      
+      @a = word2
     end
     
   end
   
   def a
+    @a
   end
   
   class Instruction
