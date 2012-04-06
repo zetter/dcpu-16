@@ -60,7 +60,7 @@ class Dcpu
     def []=(location, data)
       case location
       when 0x00..0x07
-        @registers[location] = data
+        @registers[location] = dat
       when 0x00..0x0f
         # [register]
       when 0x10..0x17
