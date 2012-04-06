@@ -51,9 +51,9 @@ private
     when REGISTERS
       lookup(@registers, location, data)
     when REGISTERS_MEM
-      lookup(memory, self[location - 0x08], data)
+      lookup(memory, self[location - REGISTERS_MEM.begin], data)
     when REGISTERS_MEM_NEXT_WORD
-      lookup(memory, self[location - 0x10] + self[NEXT_WORD_LITERAL], data)
+      lookup(memory, self[location - REGISTERS_MEM_NEXT_WORD.begin] + self[NEXT_WORD_LITERAL], data)
     when POP
       value = lookup(memory, @other[:stack_pointer], data)
       @other[:stack_pointer] += 1
