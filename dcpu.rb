@@ -50,6 +50,7 @@ class Dcpu
         #: next word (literal)
       when 0x20-0x3f
         #: literal value 0x00-0x1f (literal)
+      end
     end
 
     def []=(location, data)
