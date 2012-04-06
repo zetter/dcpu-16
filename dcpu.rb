@@ -20,6 +20,7 @@ class Dcpu
 
   
   class Storage
+    attr_accessor :memory
     def initialize
       @registers = Array.new(8)
       @memory = Array.new(0x10000)
