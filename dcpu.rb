@@ -53,7 +53,7 @@ class Dcpu
       when 0x1f
         #: next word (literal)
       when 0x20..0x3f
-        #: literal value 0x00-0x1f (literal)
+        location - 0x20
       end
     end
 
@@ -82,7 +82,7 @@ class Dcpu
       when 0x1f
         #: next word (literal)
       when 0x20..0x3f
-        #: literal value 0x00-0x1f (literal)
+        # noop
       end
     end
   end
