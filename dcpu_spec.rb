@@ -22,7 +22,8 @@ describe '#execute' do
 end
 
 describe Dcpu::Storage do
-  subject { Dcpu::Storage.new }
+  include StorageConstants
+  subject { Storage.new }
 
   describe '#[] and #[]=' do
     %W{A B C X Y Z I J}.each.with_index do |register, i|
@@ -44,56 +45,56 @@ describe Dcpu::Storage do
     %W{A B C X Y Z I J}.each.with_index do |register, i|
       it "reads [next_word + #{register}]" do
         subject[i] = 2
-        subject[0x1c] = 5
-        subject[0x1f] = 10
+        subject[PC] = 5
+        subject.memory[5 + 1] = 10
         subject.memory[12] = 40
-        subject[i + 0x10].should == 40
-        subject[0x1c].should == 6
+        subject[i + REGISTERS_MEM_NEXT_WORD.begin].should == 40
+        subject[PC].should == 6
       end
     end
 
     %W{A B C X Y Z I J}.each.with_index do |register, i|
       it "writes [next_word + #{register}]" do
         subject[i] = 2
-        subject[0x1c] = 5
-        subject[0x1f] = 10
-        subject[i + 0x10] = 40
+        subject[PC] = 5
+        subject.memory[5 + 1] = 10
+        subject[i + REGISTERS_MEM_NEXT_WORD.begin] = 40
         subject.memory[12].should == 40
       end
     end
 
     it "reads the next_word" do
-      subject[0x1c] = 5
+      subject[PC] = 5
       subject.memory[6] = 11
-      subject[0x1f].should == 11
-      subject[0x1c].should == 6
+      subject[NEXT_WORD_LITERAL].should == 11
+      subject[PC].should == 6
     end
 
     it "writes the next_word" do
-      subject[0x1c] = 5
+      subject[PC] = 5
       subject.memory[6] = 11
-      subject[0x1f] = 22
+      subject[NEXT_WORD_LITERAL] = 22
       subject.memory[6].should == 22
     end
 
     it "reads the [next_word]" do
-      subject[0x1c] = 5
+      subject[PC] = 5
       subject.memory[6] = 11
       subject.memory[11] = 100
       subject[0x1e].should == 100
-      subject[0x1c].should == 6
+      subject[PC].should == 6
     end
 
     it "writes the [next_word]" do
-      subject[0x1c] = 5
+      subject[PC] = 5
       subject.memory[6] = 11
       subject[0x1e] = 100
       subject.memory[11].should == 100
     end
 
     it "reads and writes to PC" do
-      subject[0x1c] = 17
-      subject[0x1c].should == 17
+      subject[PC] = 17
+      subject[PC].should == 17
     end
 
     it "loads literals" do
@@ -109,56 +110,56 @@ describe Dcpu::Storage do
 
     describe 'the stack' do
       it "reads PEEK" do
-        subject[0x1b] = 10
+        subject[SP] = 10
         subject.memory[10] = 40
-        subject[0x19].should == 40
-        subject[0x1b].should == 10
+        subject[PEEK].should == 40
+        subject[SP].should == 10
       end
 
       it "writes PEEK" do
-        subject[0x1b] = 10
-        subject[0x19] = 40
+        subject[SP] = 10
+        subject[PEEK] = 40
         subject.memory[10].should == 40
-        subject[0x1b].should == 10
+        subject[SP].should == 10
       end
 
       it "reads POP" do
-        subject[0x1b] = 10
+        subject[SP] = 10
         subject.memory[10] = 40
-        subject[0x18].should == 40
-        subject[0x1b].should == 11
+        subject[POP].should == 40
+        subject[SP].should == 11
       end
 
       it "writes POP" do
-        subject[0x1b] = 10
-        subject[0x18] = 40
+        subject[SP] = 10
+        subject[POP] = 40
         subject.memory[10].should == 40
-        subject[0x1b].should == 11
+        subject[SP].should == 11
       end
       
       it "reads PUSH" do
-        subject[0x1b] = 10
+        subject[SP] = 10
         subject.memory[9] = 40
-        subject[0x1a].should == 40
-        subject[0x1b].should == 9
+        subject[PUSH].should == 40
+        subject[SP].should == 9
       end
 
       it "writes PUSH" do
-        subject[0x1b] = 10
-        subject[0x1a] = 40
+        subject[SP] = 10
+        subject[PUSH] = 40
         subject.memory[9].should == 40
-        subject[0x1b].should == 9
+        subject[SP].should == 9
       end
       
     end
 
     it "starts the SP to 0xffff" do
-      subject[0x1b].should == 0xffff
+      subject[SP].should == 0xffff
     end
 
     it "reads and writes to SP" do
-      subject[0x1b] = 17
-      subject[0x1b].should == 17
+      subject[SP] = 17
+      subject[SP].should == 17
     end
 
     it "reads and writes to O" do
