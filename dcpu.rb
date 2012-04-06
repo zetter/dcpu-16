@@ -29,7 +29,7 @@ class Dcpu
     end
 
     def []=(location, data)
-      @registers[location]
+      @registers[location] = data
     end
   end
   
