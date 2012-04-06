@@ -26,7 +26,7 @@ class Dcpu
 
     def [](location)
       case location
-      when 0..8
+      when 0x00..0x07
         @registers[location]
       end
     end
