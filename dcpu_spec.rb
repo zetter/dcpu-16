@@ -104,6 +104,52 @@ describe Dcpu::Storage do
       subject[0x20].should == 0
     end
 
+    describe 'the stack' do
+      it "reads PEEK" do
+        subject[0x1b] = 10
+        subject.memory[10] = 40
+        subject[0x19].should == 40
+        subject[0x1b].should == 10
+      end
+
+      it "writes PEEK" do
+        subject[0x1b] = 10
+        subject[0x19] == 40
+        subject.memory[10].should == 40
+        subject[0x1b].should == 10
+      end
+
+      it "reads POP" do
+        subject[0x1b] = 10
+        subject.memory[10] = 40
+        subject[0x18].should == 40
+        subject[0x1b].should == 11
+      end
+
+      it "writes POP" do
+        subject[0x1b] = 11
+        subject[0x18] == 40
+        subject.memory[11].should == 40
+        subject[0x1b].should == 11
+      end
+      
+      it "reads PUSH" do
+        subject[0x1a] = 10
+        subject.memory[10] = 40
+        subject[0x18].should == 40
+        subject[0x1b].should == 11
+      end
+
+      it "writes PUSH" do
+        subject[0x1a] = 11
+        subject[0x18] == 40
+        subject.memory[11].should == 40
+        subject[0x1b].should == 9
+      end
+      
+    end
+
+
     it "reads and writes to SP" do
       subject[0x1b] = 17
       subject[0x1b].should == 17
