@@ -4,7 +4,7 @@ describe '#execute' do
   subject { Dcpu.new }
   
   it 'sets A register' do
-    subject.execute([0x7c01, 0x0030])
+    subject.execute(0x7c01, 0x0030)
     subject.a.should == 16
   end
 end

@@ -3,7 +3,11 @@ class Dcpu
   def initialize
   end
 
-  def execute(word)
+  def execute(words)
+    case word
+    when 0x01 # SET
+      
+    end
     
   end
   
