@@ -4,7 +4,7 @@ describe '#execute' do
   subject { Dcpu.new }
   
   it 'sets A register' do
-        pending
+    pending
     subject.load(0x7c01, 0x0030)
     subject.excecute
 
