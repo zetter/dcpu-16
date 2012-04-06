@@ -53,9 +53,9 @@ private
     when REGISTERS_MEM_NEXT_WORD
       [memory, self[location - REGISTERS_MEM_NEXT_WORD.begin] + self[NEXT_WORD_LITERAL]]
     when POP
-      value = [memory, @other[:stack_pointer]]
-      @other[:stack_pointer] += 1
-      value
+      [memory, @other[:stack_pointer]].tap {
+        @other[:stack_pointer] += 1
+      }
     when PEEK
       [memory, @other[:stack_pointer]]
     when PUSH
