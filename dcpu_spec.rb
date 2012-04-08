@@ -132,6 +132,10 @@ describe Executor do
       subject.execute(build_word(literal(1), literal(4), IFB))
     end
   end
+  
+  describe '#skip_next_instruction!' do
+      
+  end
 end
 
 describe Storage do

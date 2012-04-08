@@ -132,7 +132,10 @@ class Executor
     @storage = storage
   end
 
+  delegate :opcode, :a, :b :to => :@current_word
+
   def execute(word)
+    @current_word = word
     a = word.a
     b = word.b
     case word.opcode
@@ -163,5 +166,8 @@ class Executor
     when IFB
       skip_next_instruction! if (storage[a] & storage[b]) != 0
     end
+    
+private
+  def accum
   end
 end
