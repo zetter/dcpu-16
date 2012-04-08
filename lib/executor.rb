@@ -7,10 +7,10 @@ class Executor
     @storage = storage
   end
 
-  def execute(word)
-    a = word.a
-    b = word.b
-    case word.opcode
+  def execute(instruction)
+    a = instruction.a
+    b = instruction.b
+    case instruction.opcode
     when SET
       storage[a] = storage[b]
     when ADD
@@ -42,7 +42,7 @@ class Executor
 
 private
   def skip_next_instruction!
-    next_instruction = Word.new(storage.memory[storage[PC]])
-    storage[PC] += next_instruction.instruction_word_count
+    next_instruction = Instruction.new(storage.memory[storage[PC]])
+    storage[PC] += next_instruction.word_count
   end
 end

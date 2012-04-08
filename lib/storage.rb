@@ -58,8 +58,9 @@ private
     when NEXT_WORD
       [memory, self[NEXT_WORD_LITERAL]]
     when NEXT_WORD_LITERAL
-      self[PC] += 1
-      [memory, self[PC]]
+      [memory, self[PC]].tap {
+        self[PC] += 1 
+      }
     when LITERALS
       location - LITERALS.begin
     end

@@ -1,4 +1,4 @@
-class Word
+class Instruction
   include StorageConstants
 
   def initialize(word)
@@ -25,7 +25,7 @@ class Word
     (@word >> 10) % 0b1000000
   end
 
-  def instruction_word_count
+  def word_count
     1 + [a, b].count do |value|
       VALUES_REFERENCING_NEXT_WORD.any?{|range| range === value}
     end

@@ -37,7 +37,7 @@ describe Storage do
       it "reads [next_word + #{register}]" do
         subject[i] = 2
         subject[PC] = 5
-        subject.memory[5 + 1] = 10
+        subject.memory[5] = 10
         subject.memory[12] = 40
         subject[i + REGISTERS_MEM_NEXT_WORD.begin].should == 40
         subject[PC].should == 6
@@ -48,7 +48,7 @@ describe Storage do
       it "writes [next_word + #{register}]" do
         subject[i] = 2
         subject[PC] = 5
-        subject.memory[5 + 1] = 10
+        subject.memory[5] = 10
         subject[i + REGISTERS_MEM_NEXT_WORD.begin] = 40
         subject.memory[12].should == 40
       end
@@ -56,21 +56,21 @@ describe Storage do
 
     it "reads the next_word" do
       subject[PC] = 5
-      subject.memory[6] = 11
+      subject.memory[5] = 11
       subject[NEXT_WORD_LITERAL].should == 11
       subject[PC].should == 6
     end
 
     it "writes the next_word" do
       subject[PC] = 5
-      subject.memory[6] = 11
+      subject.memory[5] = 11
       subject[NEXT_WORD_LITERAL] = 22
-      subject.memory[6].should == 22
+      subject.memory[5].should == 22
     end
 
     it "reads the [next_word]" do
       subject[PC] = 5
-      subject.memory[6] = 11
+      subject.memory[5] = 11
       subject.memory[11] = 100
       subject[0x1e].should == 100
       subject[PC].should == 6
@@ -78,7 +78,7 @@ describe Storage do
 
     it "writes the [next_word]" do
       subject[PC] = 5
-      subject.memory[6] = 11
+      subject.memory[5] = 11
       subject[0x1e] = 100
       subject.memory[11].should == 100
     end
