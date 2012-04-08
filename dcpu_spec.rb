@@ -1,17 +1,21 @@
 require './dcpu'
 
-def build_word(b, a, o)
-  Dcpu::Word.new(b << 10 | a << 4 | o)
-end
+module DcpuTestHelper
+  include StorageConstants
+  include InstructionConstants  
 
-def literal(x)
-  x + LITERALS.begin
+  def build_word(b, a, o)
+    Dcpu::Word.new(b << 10 | a << 4 | o)
+  end
+
+  def literal(x)
+    x + LITERALS.begin
+  end
 end
 
 describe '#execute' do
+  include DcpuTestHelper
   subject { Dcpu.new }
-  include StorageConstants
-  include InstructionConstants  
   describe 'SET' do
     it 'sets A register' do
       subject.execute(build_word(literal(4), A, SET))
@@ -79,12 +83,10 @@ describe '#execute' do
       subject.storage[A].should == 0b0011
     end
   end
-  
-  
 end
 
 describe Storage do
-  include StorageConstants
+  include DcpuTestHelper
   subject { Storage.new }
 
   describe '#[] and #[]=' do
@@ -232,6 +234,7 @@ describe Storage do
 end
 
 describe Dcpu::Word do
+  include DcpuTestHelper
   subject {
     build_word(@b = 5, @a = 4, @opcode = 3)
   }
