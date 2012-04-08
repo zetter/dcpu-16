@@ -83,6 +83,55 @@ describe Executor do
       subject.storage[A].should == 0b0011
     end
   end
+  
+  describe 'IFE' do
+    it 'should skip next instruction when a == b' do
+      subject.should_receive :skip_next_instruction!
+      subject.execute(build_word(literal(4), literal(4), IFE))
+    end
+
+    it 'should not skip next instruction when not a == b' do
+      subject.should_not_receive :skip_next_instruction!
+      subject.execute(build_word(literal(4), literal(5), IFE))
+    end
+  end
+
+  describe 'IFN' do
+    it 'should skip next instruction when a != b' do
+      subject.should_receive :skip_next_instruction!
+      subject.execute(build_word(literal(3), literal(4), IFN))
+    end
+
+    it 'should not skip next instruction when not a != b' do
+      subject.should_not_receive :skip_next_instruction!
+      subject.execute(build_word(literal(4), literal(4), IFN))
+    end
+  end
+
+  describe 'IFG' do
+    it 'should skip next instruction when a > b' do
+      subject.should_receive :skip_next_instruction!
+      subject.execute(build_word(literal(4), literal(5), IFG))
+    end
+
+    it 'should not skip next instruction when not a > b' do
+      subject.should_not_receive :skip_next_instruction!
+      subject.execute(build_word(literal(4), literal(4), IFG))
+      subject.execute(build_word(literal(5), literal(4), IFG))
+    end
+  end
+
+  describe 'IFB' do
+    it 'should skip next instruction when (a & b) != 0' do
+      subject.should_receive :skip_next_instruction! 
+      subject.execute(build_word(literal(5), literal(5), IFB))
+    end
+
+    it 'should not skip next instruction when (a & b) == 0' do
+      subject.should_not_receive :skip_next_instruction!
+      subject.execute(build_word(literal(1), literal(4), IFB))
+    end
+  end
 end
 
 describe Storage do

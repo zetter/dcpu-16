@@ -154,6 +154,14 @@ class Executor
       storage[a] = storage[a] | storage[b]
     when XOR
       storage[a] = storage[a] ^ storage[b]
+    when IFE
+      skip_next_instruction! if storage[a] == storage[b]
+    when IFN
+      skip_next_instruction! if storage[a] != storage[b]
+    when IFG
+      skip_next_instruction! if storage[a] > storage[b]
+    when IFB
+      skip_next_instruction! if (storage[a] & storage[b]) != 0
     end
   end
 end
