@@ -9,19 +9,19 @@ I setup a shortcut to commit for speedy working, so apologies for the generic co
 To run:
 ---------------
 
-`
+```ruby
 Dcpu.new
 Dcpu.load([1,2,3])
 Dcpu.run
-`
+```
 
 To test:
 ---------------
 
-`
+```
 bundle
 bundle exec rspec spec
-`
+```
 
 
 To do:
