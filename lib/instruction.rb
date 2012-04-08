@@ -9,6 +9,10 @@ class Instruction
     @word
   end
 
+  def ==(other)
+    self.to_i == other.to_i
+  end
+
   def to_s
     @word.to_s(16)
   end

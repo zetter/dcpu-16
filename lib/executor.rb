@@ -42,7 +42,6 @@ class Executor
 
 private
   def skip_next_instruction!
-    next_instruction = Instruction.new(storage.memory[storage[PC]])
-    storage[PC] += next_instruction.word_count
+    storage.skip_next_instruction!
   end
 end

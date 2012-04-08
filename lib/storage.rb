@@ -11,6 +11,14 @@ class Storage
     }
   end
 
+  def next_instruction
+    Instruction.new(memory[self[PC]])
+  end
+
+  def skip_next_instruction!
+    self[PC] += next_instruction.word_count
+  end
+
   def reader_writer(location, data = nil)
     store, key = store_and_key(location)
 

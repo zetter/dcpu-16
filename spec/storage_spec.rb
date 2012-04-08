@@ -2,6 +2,14 @@ describe Storage do
   include DcpuTestHelper
   subject { Storage.new }
 
+  describe '#next_instruction' do
+    it 'returns the instruction pointed to from the PC' do
+      subject[PC] = 5
+      subject.memory[5] = 10
+      subject.next_instruction.should == Instruction.new(10)
+    end
+  end
+
   it 'defaults memory to 0' do
     subject.memory[0].should == 0
     subject.memory[42].should == 0

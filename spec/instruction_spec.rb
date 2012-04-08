@@ -28,6 +28,15 @@ describe Instruction do
     end
   end
 
+  describe '#==' do
+    it 'should be equal if word is equal' do
+      Instruction.new(10).should == Instruction.new(10)
+    end
+    it 'should not be equal if the word is different' do
+      Instruction.new(10).should_not == Instruction.new(11)
+    end
+  end
+
   describe '#word_count' do
     it "returns 1 for values that don't reference next word" do
       build_instruction(literal(3), literal(4), ADD).word_count.should == 1
