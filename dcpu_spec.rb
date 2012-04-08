@@ -13,9 +13,9 @@ module DcpuTestHelper
   end
 end
 
-describe '#execute' do
+describe Executor do
   include DcpuTestHelper
-  subject { Dcpu.new }
+  subject { Executor.new(Storage.new) }
   describe 'SET' do
     it 'sets A register' do
       subject.execute(build_word(literal(4), A, SET))

@@ -99,11 +99,37 @@ module InstructionConstants
 end
 
 class Dcpu
+  include StorageConstants
+
+  class Word
+    def initialize(word)
+      @word = word
+    end
+
+    def to_s
+      @word.to_s(16)
+    end
+
+    def opcode
+      @word % 0b10000
+    end
+
+    def a
+      (@word >> 4) % 0b1000000
+    end
+
+    def b
+      (@word >> 10) % 0b1000000
+    end
+  end
+end
+
+class Executor
   include InstructionConstants
   attr_reader :storage
 
-  def initialize
-    @storage = Storage.new
+  def initialize(storage)
+    @storage = storage
   end
 
   def execute(word)
@@ -130,27 +156,4 @@ class Dcpu
       storage[a] = storage[a] ^ storage[b]
     end
   end
-  
-  class Word
-    def initialize(word)
-      @word = word
-    end
-
-    def to_s
-      @word.to_s(16)
-    end
-
-    def opcode
-      @word % 0b10000
-    end
-
-    def a
-      (@word >> 4) % 0b1000000
-    end
-
-    def b
-      (@word >> 10) % 0b1000000
-    end
-  end
-
 end
