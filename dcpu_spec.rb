@@ -133,24 +133,6 @@ describe Executor do
     end
   end
 
-  describe 'extra_word_count' do
-    it "returns 0 for values that don't reference next word" do
-      (REGISTERS.to_a + REGISTERS_MEM.to_a + [POP, PEEK, PUSH, SP, PC, O] + LITERALS.to_a).each do |value|
-        result = nil
-        subject.instance_eval {result = extra_word_count(value)}
-        result.should == 0
-      end
-    end
-    
-    it "returns 1 for values that reference next word" do
-      (REGISTERS_MEM_NEXT_WORD.to_a + [NEXT_WORD, NEXT_WORD_LITERAL]).each do |value|
-        result = nil
-        subject.instance_eval {result = extra_word_count(value)}
-        result.should == 1
-      end
-    end
-  end
-
   describe '#skip_next_instruction!' do
     it 'skips the next one-word instruction' do
       subject.storage[PC] = 5
@@ -350,5 +332,24 @@ describe Dcpu::Word do
       subject.b.should == @b
     end
   end
-  
+
+  describe '#instruction_word_count' do
+    it "returns 1 for values that don't reference next word" do
+      build_word(literal(3), literal(4), ADD).instruction_word_count.should == 1
+      build_word(A, PUSH, ADD).instruction_word_count.should == 1
+    end
+
+    it "returns 2 for instructions witha a value that reference next word" do
+      build_word(NEXT_WORD, literal(4), ADD).instruction_word_count.should == 2
+      build_word(NEXT_WORD_LITERAL, literal(4), ADD).instruction_word_count.should == 2
+      build_word(REGISTERS_MEM_NEXT_WORD.begin, literal(4), ADD).instruction_word_count.should == 2
+      build_word(REGISTERS_MEM_NEXT_WORD.end, literal(4), ADD).instruction_word_count.should == 2
+      build_word(literal(3), NEXT_WORD, ADD).instruction_word_count.should == 2
+    end
+
+    it "returns 3 for instructions where both values reference next word" do
+      build_word(NEXT_WORD, NEXT_WORD_LITERAL, ADD).instruction_word_count.should == 3
+      build_word(REGISTERS_MEM_NEXT_WORD.begin, NEXT_WORD_LITERAL, ADD).instruction_word_count.should == 3
+    end
+  end
 end

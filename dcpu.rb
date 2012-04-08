@@ -102,6 +102,9 @@ class Dcpu
   include StorageConstants
 
   class Word
+    include StorageConstants
+    VALUES_REFERENCING_NEXT_WORD = [REGISTERS_MEM_NEXT_WORD, NEXT_WORD, NEXT_WORD_LITERAL]
+
     def initialize(word)
       @word = word
     end
@@ -125,7 +128,14 @@ class Dcpu
     def b
       (@word >> 10) % 0b1000000
     end
+
+    def instruction_word_count
+      1 + [a, b].count do |value|
+        VALUES_REFERENCING_NEXT_WORD.any?{|range| range === value}
+      end
+    end
   end
+
 end
 
 class Executor
@@ -173,11 +183,7 @@ class Executor
 private
   def skip_next_instruction!
     next_instruction = Dcpu::Word.new(storage.memory[storage[PC]])
-    skip_length = 1 + extra_word_count(next_instruction.a) + extra_word_count(next_instruction.b)
+    skip_length = next_instruction.instruction_word_count
     storage[PC] += skip_length
-  end
-  
-  def extra_word_count(value)
-    [REGISTERS_MEM_NEXT_WORD, NEXT_WORD, NEXT_WORD_LITERAL].any?{|range| range === value} ? 1 : 0
   end
 end
