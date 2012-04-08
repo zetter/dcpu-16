@@ -3,6 +3,7 @@ class Instruction
 
   def initialize(word)
     @word = word
+    raise TerminationError if word.nil?
   end
 
   def to_i

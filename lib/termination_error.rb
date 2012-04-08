@@ -1,0 +1,2 @@
+class TerminationError < StandardError
+end
