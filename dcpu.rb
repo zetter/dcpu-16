@@ -106,6 +106,10 @@ class Dcpu
       @word = word
     end
 
+    def to_i
+      @word
+    end
+
     def to_s
       @word.to_s(16)
     end
@@ -126,16 +130,14 @@ end
 
 class Executor
   include InstructionConstants
+  include StorageConstants
   attr_reader :storage
 
   def initialize(storage)
     @storage = storage
   end
 
-  delegate :opcode, :a, :b :to => :@current_word
-
   def execute(word)
-    @current_word = word
     a = word.a
     b = word.b
     case word.opcode
@@ -166,8 +168,16 @@ class Executor
     when IFB
       skip_next_instruction! if (storage[a] & storage[b]) != 0
     end
-    
+  end
+
 private
-  def accum
+  def skip_next_instruction!
+    next_instruction = Dcpu::Word.new(storage.memory[storage[PC]])
+    skip_length = 1 + extra_word_count(next_instruction.a) + extra_word_count(next_instruction.b)
+    storage[PC] += skip_length
+  end
+  
+  def extra_word_count(value)
+    [REGISTERS_MEM_NEXT_WORD, NEXT_WORD, NEXT_WORD_LITERAL].any?{|range| range === value} ? 1 : 0
   end
 end

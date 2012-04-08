@@ -132,9 +132,44 @@ describe Executor do
       subject.execute(build_word(literal(1), literal(4), IFB))
     end
   end
-  
+
+  describe 'extra_word_count' do
+    it "returns 0 for values that don't reference next word" do
+      (REGISTERS.to_a + REGISTERS_MEM.to_a + [POP, PEEK, PUSH, SP, PC, O] + LITERALS.to_a).each do |value|
+        result = nil
+        subject.instance_eval {result = extra_word_count(value)}
+        result.should == 0
+      end
+    end
+    
+    it "returns 1 for values that reference next word" do
+      (REGISTERS_MEM_NEXT_WORD.to_a + [NEXT_WORD, NEXT_WORD_LITERAL]).each do |value|
+        result = nil
+        subject.instance_eval {result = extra_word_count(value)}
+        result.should == 1
+      end
+    end
+  end
+
   describe '#skip_next_instruction!' do
-      
+    it 'skips the next one-word instruction' do
+      subject.storage[PC] = 5
+      subject.storage.memory[5] = build_word(literal(1), literal(4), ADD).to_i
+      subject.instance_eval {skip_next_instruction!}
+      subject.storage[PC].should == 6
+    end
+    it 'skips the next two-word instruction' do
+      subject.storage[PC]= 5
+      subject.storage.memory[5] = build_word(NEXT_WORD, literal(4), ADD).to_i
+      subject.instance_eval {skip_next_instruction!}
+      subject.storage[PC].should == 7
+    end
+    it 'skips the next three-word instruction' do
+      subject.storage[PC] = 5
+      subject.storage.memory[5] = build_word(NEXT_WORD, NEXT_WORD, ADD).to_i
+      subject.instance_eval {skip_next_instruction!}
+      subject.storage[PC].should == 8
+    end
   end
 end
 
