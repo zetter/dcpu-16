@@ -14,6 +14,8 @@ module StorageConstants
   NEXT_WORD = 0x1e
   NEXT_WORD_LITERAL = 0x1f
   LITERALS = 0x20..0x3f
+
+  VALUES_REFERENCING_NEXT_WORD = [REGISTERS_MEM_NEXT_WORD, NEXT_WORD, NEXT_WORD_LITERAL]
 end
 
 class Storage
@@ -103,7 +105,6 @@ class Dcpu
 
   class Word
     include StorageConstants
-    VALUES_REFERENCING_NEXT_WORD = [REGISTERS_MEM_NEXT_WORD, NEXT_WORD, NEXT_WORD_LITERAL]
 
     def initialize(word)
       @word = word
@@ -183,7 +184,6 @@ class Executor
 private
   def skip_next_instruction!
     next_instruction = Dcpu::Word.new(storage.memory[storage[PC]])
-    skip_length = next_instruction.instruction_word_count
-    storage[PC] += skip_length
+    storage[PC] += next_instruction.instruction_word_count
   end
 end
