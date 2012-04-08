@@ -3,7 +3,7 @@ class Storage
   attr_accessor :memory
   def initialize
     @registers = Array.new(8)
-    @memory = Array.new(0x10000)
+    @memory = Array.new(0x10000, 0)
     @other = {
       program_counter: 0,
       stack_pointer: 0xffff,
@@ -21,7 +21,11 @@ class Storage
       store[key]
     end
   end
-  
+
+  def load(words, offset = 0)
+    memory[offset, words.length] = words
+  end
+
   alias_method :[], :reader_writer
   alias_method :[]=, :reader_writer
 

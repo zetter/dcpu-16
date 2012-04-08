@@ -2,6 +2,20 @@ describe Storage do
   include DcpuTestHelper
   subject { Storage.new }
 
+  it 'defaults memory to 0' do
+    subject.memory[0].should == 0
+    subject.memory[42].should == 0
+  end
+
+  describe "#load" do
+    it 'loads the words at offset 0 by default' do
+      subject.load([4, 7])
+      subject.memory[0].should == 4
+      subject.memory[1].should == 7
+      subject.memory[2].should == 0
+    end
+  end
+
   describe '#[] and #[]=' do
     %W{A B C X Y Z I J}.each.with_index do |register, i|
       it "reads and write to #{register}" do
